@@ -1,7 +1,27 @@
 ﻿@page "/"
+@rendermode InteractiveServer
 
-<PageTitle>Home</PageTitle>
+<PageTitle>TravelMATE - Home</PageTitle>
 
-<h1>Hello, world! Test commit </h1>
+<div class="container mt-5 text-center">
+    <h1 class="display-3 fw-bold">TravelMATE</h1>
 
-Welcome to your new app.
+    <p class="lead mt-3">
+        Your smart travel companion!
+    </p>
+
+    <p class="mt-4">
+        Plan your next adventure with real-time weather
+        information, travel forecasts and currency conversion.
+    </p>
+
+    <div class="mt-5">
+        <a href="/weather" class="btn btn-primary btn-lg me-3">
+            Check Weather
+        </a>
+
+        <a href="/currency" class="btn btn-success btn-lg">
+            Currency Converter
+        </a>
+    </div>
+</div>
