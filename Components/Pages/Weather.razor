@@ -1,63 +1,97 @@
 ﻿@page "/weather"
+@rendermode InteractiveServer
+@using TravelMate.Services
+@inject WeatherService WeatherService
 
-<PageTitle>Weather</PageTitle>
+<PageTitle>Weather - TravelMATE</PageTitle>
 
-<h1>Weather</h1>
+<h1>Destination Weather</h1>
 
-<p>This component demonstrates showing data.</p>
+<p>Check the current weather at your travel destination.</p>
 
-@if (forecasts == null)
+<div class="mb-3">
+    <label class="form-label">Choose a destination:</label>
+
+    <select class="form-select" @bind="selectedCity">
+        <option value="Dublin">Dublin, Ireland</option>
+        <option value="London">London, UK</option>
+        <option value="Tokyo">Tokyo, Japan</option>
+        <option value="Dubai">Dubai, UAE</option>
+        <option value="New York">New York, USA</option>
+    </select>
+</div>
+
+<button class="btn btn-primary" @onclick="GetWeather">
+    Check Weather
+</button>
+
+@if (isLoading)
 {
-    <p><em>Loading...</em></p>
+    <p class="mt-3">Loading weather information...</p>
 }
-else
+
+@if (!string.IsNullOrEmpty(errorMessage))
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th aria-label="Temperature in Celsius">Temp. (C)</th>
-                <th aria-label="Temperature in Fahrenheit">Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="alert alert-danger mt-3">
+        @errorMessage
+    </div>
+}
+
+@if (weather != null && weather.Current != null)
+{
+    <div class="card mt-4">
+        <div class="card-body">
+            <h3>Weather in @selectedCity</h3>
+
+            <p>Temperature: @weather.Current.Temperature_2m °C</p>
+            <p>Humidity: @weather.Current.Relative_humidity_2m%</p>
+            <p>Wind Speed: @weather.Current.Wind_speed_10m km/h</p>
+        </div>
+    </div>
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private string selectedCity = "Dublin";
+    private WeatherResponse? weather;
+    private bool isLoading = false;
+    private string? errorMessage;
 
-    protected override async Task OnInitializedAsync()
+    private readonly Dictionary<string, (double Lat, double Lon)> cities = new()
     {
-        // Simulate asynchronous loading to demonstrate a loading indicator
-        await Task.Delay(500);
+        { "Dublin", (53.3498, -6.2603) },
+        { "London", (51.5074, -0.1278) },
+        { "Tokyo", (35.6762, 139.6503) },
+        { "Dubai", (25.2048, 55.2708) },
+        { "New York", (40.7128, -74.0060) }
+    };
 
-        var startDate = DateOnly.FromDateTime(DateTime.Now);
-        var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
-        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+    private async Task GetWeather()
+    {
+        isLoading = true;
+        errorMessage = null;
+        weather = null;
+
+        try
         {
-            Date = startDate.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = summaries[Random.Shared.Next(summaries.Length)]
-        }).ToArray();
-    }
+            var location = cities[selectedCity];
 
-    private class WeatherForecast
-    {
-        public DateOnly Date { get; set; }
-        public int TemperatureC { get; set; }
-        public string? Summary { get; set; }
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+            weather = await WeatherService.GetWeatherAsync(
+                location.Lat,
+                location.Lon
+            );
+
+            if (weather?.Current == null)
+            {
+                errorMessage = "Weather data is unavailable.";
+            }
+        }
+        catch (Exception)
+        {
+            errorMessage = "Unable to retrieve weather information.";
+        }
+        finally
+        {
+            isLoading = false;
+        }
     }
 }
