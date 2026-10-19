@@ -10,6 +10,7 @@ builder.Services.AddRazorComponents()
 
 // Register the WeatherService for API requests
 builder.Services.AddHttpClient<WeatherService>();
+builder.Services.AddHttpClient<CurrencyService>();
 
 var app = builder.Build();
 
