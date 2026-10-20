@@ -12,6 +12,20 @@ public class CurrencyService
         _httpClient = httpClient;
     }
 
+    public static decimal CalculateConversion(
+    decimal amount, decimal rate)
+    {
+        if (amount < 0)
+            throw new ArgumentOutOfRangeException(
+                nameof(amount), "Amount cannot be negative.");
+
+        if (rate <= 0)
+            throw new ArgumentOutOfRangeException(
+                nameof(rate), "Exchange rate must be positive.");
+
+        return amount * rate;
+    }
+
     public async Task<CurrencyResponse?> ConvertCurrencyAsync(
         string fromCurrency,
         string toCurrency,
@@ -28,7 +42,7 @@ public class CurrencyService
         if (response != null)
         {
             response.ConvertedAmount =
-                amount * response.Rate;
+             CalculateConversion(amount, response.Rate);
         }
 
         return response;
@@ -43,3 +57,5 @@ public class CurrencyResponse
     public decimal Rate { get; set; }
     public decimal ConvertedAmount { get; set; }
 }
+
+
