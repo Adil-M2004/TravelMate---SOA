@@ -8,9 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-// Register the WeatherService for API requests
+// Register the WeatherService/CurrenyService/GeocodingService for API requests
 builder.Services.AddHttpClient<WeatherService>();
 builder.Services.AddHttpClient<CurrencyService>();
+builder.Services.AddHttpClient<GeocodingService>();
 
 var app = builder.Build();
 
