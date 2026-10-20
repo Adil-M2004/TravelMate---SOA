@@ -11,6 +11,7 @@
 
 <h1>TravelMATE Dashboard</h1>
 <p>Plan your trip with live weather and currency information.</p>
+
 <div class="card p-4 mb-4">
     <label class="form-label">Search Destination</label>
 
@@ -27,3 +28,221 @@
         </button>
     </div>
 </div>
+
+@if (isLoading)
+{
+    <div class="alert alert-info">
+        Loading travel information...
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">
+        @errorMessage
+    </div>
+}
+
+@if (cities.Count > 0)
+{
+    <div class="card p-3 mb-4">
+        <h5>Select your destination</h5>
+
+        <div class="list-group">
+            @foreach (var city in cities)
+            {
+                <button class="list-group-item list-group-item-action"
+                        @onclick="() => SelectDestination(city)">
+                    @city.Name, @city.Region, @city.Country
+                </button>
+            }
+        </div>
+    </div>
+}
+
+@if (selectedCity != null)
+{
+    <div class="alert alert-primary">
+        <h3>@selectedCity.Name, @selectedCity.Country</h3>
+        <p class="mb-0">Your selected travel destination</p>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h4>Weather Information</h4>
+                    <hr />
+
+                    @if (weather?.Current != null)
+                    {
+                        <h2>
+                            @weather.Current.Temperature_2m °C
+                        </h2>
+
+                        <p>
+                            Humidity:
+                            @weather.Current.Relative_humidity_2m%
+                        </p>
+
+                        <p>
+                            Wind Speed:
+                            @weather.Current.Wind_speed_10m km/h
+                        </p>
+                    }
+                    else
+                    {
+                        <p>Weather information unavailable.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h4>Currency Information</h4>
+                    <hr />
+
+                    @if (currency != null)
+                    {
+                        <h5>
+                            EUR to @destinationCurrency
+                        </h5>
+
+                        <h2>
+                            @currency.ConvertedAmount.ToString("N2")
+                            @destinationCurrency
+                        </h2>
+
+                        <p>
+                            Equivalent to 100 EUR
+                        </p>
+
+                        <p>
+                            Exchange Rate:
+                            @currency.Rate
+                        </p>
+
+                        <small>
+                            Rate Date: @currency.Date
+                        </small>
+                    }
+                    else if (destinationCurrency == "EUR")
+                    {
+                        <h2>100.00 EUR</h2>
+                        <p>Destination uses the euro.</p>
+                    }
+                    else
+                    {
+                        <p>
+                            Currency conversion unavailable
+                            for this destination.
+                        </p>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+
+@code {
+    private string searchText = "";
+    private List<CityResult> cities = new();
+    private CityResult? selectedCity;
+
+    private WeatherResponse? weather;
+    private CurrencyResponse? currency;
+
+    private string? destinationCurrency;
+    private string? errorMessage;
+    private bool isLoading;
+
+    private async Task SearchDestinations()
+    {
+        cities.Clear();
+        selectedCity = null;
+        weather = null;
+        currency = null;
+        destinationCurrency = null;
+        errorMessage = null;
+
+        if (searchText.Trim().Length < 2)
+        {
+            errorMessage = "Enter at least two characters.";
+            return;
+        }
+
+        isLoading = true;
+
+        try
+        {
+            cities = await GeocodingService
+                .SearchCitiesAsync(searchText);
+
+            if (cities.Count == 0)
+            {
+                errorMessage = "No destinations found.";
+            }
+        }
+        catch (Exception)
+        {
+            errorMessage = "Unable to search destinations.";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task SelectDestination(CityResult city)
+    {
+        selectedCity = city;
+        cities.Clear();
+        weather = null;
+        currency = null;
+        errorMessage = null;
+        isLoading = true;
+
+        try
+        {
+            destinationCurrency =
+                CountryCurrencyService.GetCurrency(
+                    city.CountryCode);
+
+            // Retrieve weather from Open-Meteo
+            weather = await WeatherService.GetWeatherAsync(
+                city.Latitude,
+                city.Longitude);
+
+            // Retrieve exchange rate from Frankfurter
+            if (destinationCurrency != null &&
+                destinationCurrency != "EUR")
+            {
+                try
+                {
+                    currency = await CurrencyService
+                        .ConvertCurrencyAsync(
+                            "EUR",
+                            destinationCurrency,
+                            100);
+                }
+                catch (HttpRequestException)
+                {
+                    currency = null;
+                }
+            }
+        }
+        catch (Exception)
+        {
+            errorMessage =
+                "Some travel information could not be loaded.";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}
