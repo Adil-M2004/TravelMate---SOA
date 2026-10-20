@@ -12,6 +12,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddHttpClient<WeatherService>();
 builder.Services.AddHttpClient<CurrencyService>();
 builder.Services.AddHttpClient<GeocodingService>();
+builder.Services.AddSingleton<CountryCurrencyService>();
 
 var app = builder.Build();
 
