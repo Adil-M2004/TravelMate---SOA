@@ -8,3 +8,133 @@
 <h1>Currency Converter</h1>
 
 <p>Convert currencies using the latest available exchange rates.</p>
+
+<div class="card p-4 mt-4">
+
+    <div class="mb-3">
+        <label class="form-label">Amount</label>
+        <InputNumber @bind-Value="amount"
+                     class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">From Currency</label>
+
+        <select class="form-select" @bind="fromCurrency">
+            <option value="EUR">EUR - Euro</option>
+            <option value="USD">USD - US Dollar</option>
+            <option value="GBP">GBP - British Pound</option>
+            <option value="JPY">JPY - Japanese Yen</option>
+            <option value="AUD">AUD - Australian Dollar</option>
+            <option value="CAD">CAD - Canadian Dollar</option>
+            <option value="CHF">CHF - Swiss Franc</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">To Currency</label>
+
+        <select class="form-select" @bind="toCurrency">
+            <option value="USD">USD - US Dollar</option>
+            <option value="EUR">EUR - Euro</option>
+            <option value="GBP">GBP - British Pound</option>
+            <option value="JPY">JPY - Japanese Yen</option>
+            <option value="AUD">AUD - Australian Dollar</option>
+            <option value="CAD">CAD - Canadian Dollar</option>
+            <option value="CHF">CHF - Swiss Franc</option>
+        </select>
+    </div>
+
+    <button class="btn btn-primary"
+            @onclick="ConvertCurrency"
+            disabled="@isLoading">
+        @(isLoading ? "Converting..." : "Convert Currency")
+    </button>
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger mt-3">
+            @errorMessage
+        </div>
+    }
+
+    @if (result != null)
+    {
+        <div class="alert alert-success mt-4">
+            <h4>Conversion Result</h4>
+
+            <h3>
+                @amount.ToString("N2") @fromCurrency =
+                @result.ConvertedAmount.ToString("N2") @toCurrency
+            </h3>
+
+            <p>
+                Exchange Rate: 1 @fromCurrency =
+                @result.Rate @toCurrency
+            </p>
+
+            <small>Rate Date: @result.Date</small>
+        </div>
+    }
+
+</div>
+
+@code {
+    private decimal amount = 100;
+    private string fromCurrency = "EUR";
+    private string toCurrency = "USD";
+
+    private CurrencyResponse? result;
+    private string? errorMessage;
+    private bool isLoading;
+
+    private async Task ConvertCurrency()
+    {
+        result = null;
+        errorMessage = null;
+
+        if (amount <= 0)
+        {
+            errorMessage = "Please enter an amount greater than zero.";
+            return;
+        }
+
+        if (fromCurrency == toCurrency)
+        {
+            result = new CurrencyResponse
+            {
+                Base = fromCurrency,
+                Quote = toCurrency,
+                Rate = 1,
+                ConvertedAmount = amount,
+                Date = DateTime.Today.ToString("yyyy-MM-dd")
+            };
+            return;
+        }
+
+        isLoading = true;
+
+        try
+        {
+            result = await CurrencyService.ConvertCurrencyAsync(
+                fromCurrency, toCurrency, amount);
+
+            if (result == null)
+            {
+                errorMessage = "No exchange rate was returned.";
+            }
+        }
+        catch (HttpRequestException)
+        {
+            errorMessage = "Unable to retrieve exchange rates. Please try again.";
+        }
+        catch (Exception)
+        {
+            errorMessage = "An unexpected error occurred.";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}
