@@ -1,5 +1,29 @@
-﻿<h3>Dashboard</h3>
+﻿@page "/dashboard"
+@rendermode InteractiveServer
+@using TravelMate.Services
 
-@code {
+@inject GeocodingService GeocodingService
+@inject WeatherService WeatherService
+@inject CurrencyService CurrencyService
+@inject CountryCurrencyService CountryCurrencyService
 
-}
+<PageTitle>Dashboard - TravelMATE</PageTitle>
+
+<h1>TravelMATE Dashboard</h1>
+<p>Plan your trip with live weather and currency information.</p>
+<div class="card p-4 mb-4">
+    <label class="form-label">Search Destination</label>
+
+    <div class="input-group">
+        <input class="form-control"
+               placeholder="e.g. Tokyo, Paris, Dubai"
+               @bind="searchText"
+               @bind:event="oninput" />
+
+        <button class="btn btn-primary"
+                disabled="@isLoading"
+                @onclick="SearchDestinations">
+            Search
+        </button>
+    </div>
+</div>
