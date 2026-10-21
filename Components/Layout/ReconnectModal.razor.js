@@ -1,4 +1,4 @@
-// Set up event handlers
+// Find the dialog and buttons once when this module is loaded.
 const reconnectModal = document.getElementById("components-reconnect-modal");
 reconnectModal.addEventListener("components-reconnect-state-changed", handleReconnectStateChanged);
 
@@ -9,6 +9,7 @@ const resumeButton = document.getElementById("components-resume-button");
 resumeButton.addEventListener("click", resume);
 
 function handleReconnectStateChanged(event) {
+    // Blazor sends a state name so the dialog knows which connection message to show.
     if (event.detail.state === "show") {
         reconnectModal.showModal();
     } else if (event.detail.state === "hide") {
@@ -21,6 +22,7 @@ function handleReconnectStateChanged(event) {
 }
 
 async function retry() {
+    // A retry requested by the user should not also be triggered by a visibility event.
     document.removeEventListener("visibilitychange", retryWhenDocumentBecomesVisible);
 
     try {
@@ -46,6 +48,7 @@ async function retry() {
 }
 
 async function resume() {
+    // A paused circuit can sometimes continue without a full page reload.
     try {
         const successful = await Blazor.resumeCircuit();
         if (!successful) {
@@ -57,6 +60,7 @@ async function resume() {
 }
 
 async function retryWhenDocumentBecomesVisible() {
+    // Wait until the user returns to the tab before trying again.
     if (document.visibilityState === "visible") {
         await retry();
     }

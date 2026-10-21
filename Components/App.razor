@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    @* This is the main HTML document that hosts the Blazor application. *@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="/" />
@@ -15,7 +16,10 @@
 </head>
 
 <body>
+    @* Routes chooses which page component should be displayed for the URL. *@
     <Routes @rendermode="InteractiveServer" />
+
+    @* This modal appears when the browser temporarily loses its server connection. *@
     <ReconnectModal />
     <script src="@Assets["_framework/blazor.web.js"]"></script>
 </body>

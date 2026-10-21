@@ -8,11 +8,13 @@
 @inject CountryCurrencyService CountryCurrencyService
 @inject ForecastService ForecastService
 
+@* The dashboard combines destination search, current weather, currency, and forecast data. *@
 <PageTitle>Dashboard - TravelMATE</PageTitle>
 
 <h1>TravelMATE Dashboard</h1>
 <p>Plan your trip with live weather and currency information.</p>
 
+@* Search for a city before loading information about it. *@
 <div class="card p-4 mb-4">
     <label class="form-label">Search Destination</label>
 
@@ -30,6 +32,7 @@
     </div>
 </div>
 
+@* Disable actions and show feedback while an API request is running. *@
 @if (isLoading)
 {
     <div class="alert alert-info">
@@ -44,6 +47,7 @@
     </div>
 }
 
+@* Several cities can have the same name, so let the user select the right match. *@
 @if (cities.Count > 0)
 {
     <div class="card p-3 mb-4">
@@ -61,6 +65,7 @@
     </div>
 }
 
+@* The remaining dashboard cards appear after a destination has been selected. *@
 @if (selectedCity != null)
 {
     <div class="alert alert-primary">
@@ -70,6 +75,7 @@
 
     <div class="row g-4">
 
+        @* Current weather and currency are shown side by side on wider screens. *@
         <div class="col-md-6">
             <div class="card h-100 shadow-sm">
                 <div class="card-body">
@@ -149,6 +155,7 @@
     </div>
 
     
+    @* The forecast list gives the user extra information for planning ahead. *@
     <section class="forecast-section mt-5">
 
         <h3>7-Day Weather Forecast</h3>
@@ -219,6 +226,7 @@
 }
 
 @code {
+    // These fields store the search, selected destination, API results, and UI status.
     private string searchText = "";
     private List<CityResult> cities = new();
     private CityResult? selectedCity;
@@ -235,6 +243,7 @@
 
     private async Task SearchDestinations()
     {
+        // A new search should not leave information from the previous destination visible.
         cities.Clear();
         selectedCity = null;
         weather = null;
@@ -245,6 +254,7 @@
         forecast.Clear();
         forecastError = null;
 
+        // Require a useful search term before contacting the geocoding API.
         if (searchText.Trim().Length < 2)
         {
             errorMessage = "Enter at least two characters.";
@@ -255,6 +265,7 @@
 
         try
         {
+            // Search for matching cities first; the user will choose one below.
             cities = await GeocodingService
                 .SearchCitiesAsync(searchText);
 
@@ -275,6 +286,7 @@
 
     private async Task SelectDestination(CityResult city)
     {
+        // Clear old results because all displayed information belongs to the new city.
         selectedCity = city;
         cities.Clear();
         weather = null;
@@ -286,6 +298,7 @@
 
         try
         {
+            // The forecast is independent, so its error is shown separately from current data.
             forecast = await ForecastService.GetForecastAsync(
                 city.Latitude,
                 city.Longitude);
@@ -301,12 +314,12 @@
                 CountryCurrencyService.GetCurrency(
                     city.CountryCode);
 
-            // Retrieve weather from Open-Meteo
+            // Retrieve current weather from Open-Meteo.
             weather = await WeatherService.GetWeatherAsync(
                 city.Latitude,
                 city.Longitude);
 
-            // Retrieve exchange rate from Frankfurter
+            // Retrieve the destination currency and exchange rate from Frankfurter.
             if (destinationCurrency != null &&
                 destinationCurrency != "EUR")
             {

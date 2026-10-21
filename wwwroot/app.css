@@ -1,3 +1,4 @@
+/* Basic defaults used by the generated Blazor layout and form controls. */
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -417,6 +418,7 @@ main .list-group-item {
 }
 
 @media (prefers-reduced-motion: reduce) {
+    /* Respect users who ask the browser to reduce animation. */
     .planet {
         animation: none;
     }
@@ -431,6 +433,8 @@ main .list-group-item {
 /* =====================================
    TravelMATE - Seven Day Forecast
    ===================================== */
+
+/* Forecast cards stay readable while allowing horizontal scrolling on small screens. */
 
 .forecast-section h3 {
     color: #f1f7ff;

@@ -1,3 +1,4 @@
+/* Hide every status message until Blazor adds the matching modal state class. */
 .components-reconnect-first-attempt-visible,
 .components-reconnect-repeated-attempt-visible,
 .components-reconnect-failed-visible,
@@ -7,6 +8,7 @@
     display: none;
 }
 
+/* Show only the controls and message belonging to the current connection state. */
 #components-reconnect-modal.components-reconnect-show .components-reconnect-first-attempt-visible,
 #components-reconnect-modal.components-reconnect-show .components-rejoining-animation,
 #components-reconnect-modal.components-reconnect-paused .components-pause-visible,
@@ -21,6 +23,7 @@
 
 
 #components-reconnect-modal {
+    /* Center the reconnect dialog and animate it when it opens or closes. */
     background-color: white;
     width: 20rem;
     margin: 20vh auto;
@@ -41,12 +44,14 @@
 }
 
 #components-reconnect-modal::backdrop {
+    /* Dim the page so the reconnect message is easy to notice. */
     background-color: rgba(0, 0, 0, 0.4);
     animation: components-reconnect-modal-fadeInOpacity 0.5s ease-in-out;
     opacity: 1;
 }
 
 @keyframes components-reconnect-modal-slideUp {
+    /* Start slightly lower and smaller, then move into its final position. */
     0% {
         transform: translateY(30px) scale(0.95);
     }
@@ -57,6 +62,7 @@
 }
 
 @keyframes components-reconnect-modal-fadeInOpacity {
+    /* Fade the dialog and backdrop into view. */
     0% {
         opacity: 0;
     }
@@ -67,6 +73,7 @@
 }
 
 @keyframes components-reconnect-modal-fadeOutOpacity {
+    /* Fade the dialog out when the connection is restored. */
     0% {
         opacity: 1;
     }
@@ -77,6 +84,7 @@
 }
 
 .components-reconnect-container {
+    /* Stack the message, animation, and buttons neatly in the dialog. */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -105,6 +113,7 @@
     }
 
 .components-rejoining-animation {
+    /* This area contains two expanding circles used as a loading animation. */
     position: relative;
     width: 80px;
     height: 80px;

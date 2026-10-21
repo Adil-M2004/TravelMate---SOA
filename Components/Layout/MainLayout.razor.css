@@ -1,17 +1,21 @@
+/* Put the sidebar and page content in a column on small screens. */
 .page {
     position: relative;
     display: flex;
     flex-direction: column;
 }
 
+/* The main area grows to use all space left by the sidebar. */
 main {
     flex: 1;
 }
 
+/* Use the default gradient until the global TravelMATE theme overrides it. */
 .sidebar {
     background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
 }
 
+/* The top row contains the small link above the page content. */
 .top-row {
     background-color: #f7f7f7;
     border-bottom: 1px solid #d6d5d5;
@@ -37,6 +41,7 @@ main {
     }
 
 @media (max-width: 640.98px) {
+    /* On phones, keep the top-row items spaced across the available width. */
     .top-row {
         justify-content: space-between;
     }
@@ -47,6 +52,7 @@ main {
 }
 
 @media (min-width: 641px) {
+    /* On larger screens, show a permanent sidebar beside the content. */
     .page {
         flex-direction: row;
     }
@@ -77,6 +83,7 @@ main {
 }
 
 #blazor-error-ui {
+    /* Blazor toggles this bar when an unhandled UI error occurs. */
     color-scheme: light only;
     background: lightyellow;
     bottom: 0;

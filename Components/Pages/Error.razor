@@ -1,6 +1,7 @@
 ﻿@page "/Error"
 @using System.Diagnostics
 
+@* This page is shown when the server catches an unhandled application error. *@
 <PageTitle>Error</PageTitle>
 
 <h1 class="text-danger">Error.</h1>
@@ -25,12 +26,14 @@
 </p>
 
 @code{
+    // HttpContext provides another request identifier when Activity has none.
     [CascadingParameter]
     private HttpContext? HttpContext { get; set; }
 
     private string? RequestId { get; set; }
     private bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
+    // A request ID helps a developer match this screen to a server log entry.
     protected override void OnInitialized() =>
         RequestId = Activity.Current?.Id ?? HttpContext?.TraceIdentifier;
 }

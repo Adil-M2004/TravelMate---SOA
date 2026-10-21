@@ -3,6 +3,7 @@
 @using TravelMate.Services
 @inject CurrencyService CurrencyService
 
+@* This page lets the user enter an amount and request a current exchange rate. *@
 <PageTitle>Currency Converter - TravelMATE</PageTitle>
 
 <h1>Currency Converter</h1>
@@ -11,6 +12,7 @@
 
 <div class="card p-4 mt-4">
 
+    @* The amount and currency selectors form the input for the conversion. *@
     <div class="mb-3">
         <label class="form-label">Amount</label>
         <InputNumber @bind-Value="amount"
@@ -58,6 +60,7 @@
         </div>
     }
 
+    @* Show the answer only after a successful conversion or same-currency shortcut. *@
     @if (result != null)
     {
         <div class="alert alert-success mt-4">
@@ -80,6 +83,7 @@
 </div>
 
 @code {
+    // These fields are bound to the form controls and keep the conversion state.
     private decimal amount = 100;
     private string fromCurrency = "EUR";
     private string toCurrency = "USD";
@@ -90,15 +94,18 @@
 
     private async Task ConvertCurrency()
     {
+        // Clear the previous answer before validating the new request.
         result = null;
         errorMessage = null;
 
+        // A currency amount must be greater than zero.
         if (amount <= 0)
         {
             errorMessage = "Please enter an amount greater than zero.";
             return;
         }
 
+        // No API call is needed when both currencies are the same.
         if (fromCurrency == toCurrency)
         {
             result = new CurrencyResponse
@@ -116,6 +123,7 @@
 
         try
         {
+            // Ask the service to retrieve the latest rate and calculate the result.
             result = await CurrencyService.ConvertCurrencyAsync(
                 fromCurrency, toCurrency, amount);
 

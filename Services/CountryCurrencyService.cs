@@ -3,6 +3,8 @@ namespace TravelMate.Services;
 
 public class CountryCurrencyService
 {
+    // This small lookup table connects ISO country codes with the currency
+    // normally used in those countries. It avoids an extra API call.
     private readonly Dictionary<string, string> _currencies = new()
     {
         { "IE", "EUR" },
@@ -46,6 +48,8 @@ public class CountryCurrencyService
 
     public string? GetCurrency(string countryCode)
     {
+        // Country codes from the geocoding API may use different casing,
+        // so normalize them before looking them up.
         return _currencies.TryGetValue(
             countryCode.ToUpperInvariant(),
             out var currency)

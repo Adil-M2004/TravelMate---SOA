@@ -4,6 +4,7 @@
 @inject WeatherService WeatherService
 @inject GeocodingService GeocodingService
 
+@* This page searches for a city first, then loads weather for the selected result. *@
 <PageTitle>Destination Weather - TravelMATE</PageTitle>
 
 <h1>Destination Weather</h1>
@@ -38,6 +39,7 @@
         </div>
     }
 
+    @* Show possible matches so the user can choose the correct city. *@
     @if (cities.Count > 0)
     {
         <h5>Select a destination:</h5>
@@ -55,6 +57,7 @@
         </div>
     }
 
+    @* Weather is displayed only after both a city and current data are available. *@
     @if (weather?.Current != null && selectedCity != null)
     {
         <div class="card mt-3">
@@ -86,6 +89,7 @@
 </div>
 
 @code {
+    // These fields hold the search text and the data displayed by the page.
     private string searchText = "";
     private List<CityResult> cities = new();
     private CityResult? selectedCity;
@@ -95,6 +99,7 @@
 
     private async Task SearchCities()
     {
+        // Start each search with a clean result area.
         isLoading = true;
         errorMessage = null;
         cities.Clear();
@@ -103,12 +108,14 @@
 
         try
         {
+            // A short search is unlikely to return a useful city result.
             if (searchText.Trim().Length < 2)
             {
                 errorMessage = "Enter at least two characters.";
                 return;
             }
 
+            // First find matching coordinates; weather needs those coordinates.
             cities = await GeocodingService
                 .SearchCitiesAsync(searchText);
 
@@ -129,6 +136,7 @@
 
     private async Task SelectCity(CityResult city)
     {
+        // Save the selected city and replace the search results with its weather.
         selectedCity = city;
         cities.Clear();
         weather = null;

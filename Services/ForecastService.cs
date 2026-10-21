@@ -8,6 +8,7 @@ public class ForecastService
 {
     private readonly HttpClient _httpClient;
 
+    // HttpClient is supplied automatically by dependency injection.
     public ForecastService(HttpClient httpClient)
     {
         _httpClient = httpClient;
@@ -16,6 +17,8 @@ public class ForecastService
     public async Task<List<DailyForecast>> GetForecastAsync(
         double latitude, double longitude)
     {
+        // Request seven days of daily weather data for the selected location.
+        // InvariantCulture keeps decimal coordinates valid in every locale.
         string url =
             "https://api.open-meteo.com/v1/forecast" +
             $"?latitude={latitude.ToString(System.Globalization.CultureInfo.InvariantCulture)}" +
@@ -27,12 +30,16 @@ public class ForecastService
         var response = await _httpClient
             .GetFromJsonAsync<ForecastResponse>(url);
 
+        // Returning an empty list lets the page display normally when the API
+        // does not include a daily section.
         if (response?.Daily == null)
             return new List<DailyForecast>();
 
         var daily = response.Daily;
         var forecasts = new List<DailyForecast>();
 
+        // The API stores each weather value in a list. The same index belongs
+        // to the same day in all of those lists, so combine them here.
         for (int i = 0; i < daily.Time.Count; i++)
         {
             forecasts.Add(new DailyForecast
@@ -55,12 +62,14 @@ public class ForecastService
 
 public class ForecastResponse
 {
+    // JsonPropertyName connects the API's lowercase field to this C# property.
     [JsonPropertyName("daily")]
     public DailyForecastData? Daily { get; set; }
 }
 
 public class DailyForecastData
 {
+    // These lists are the parallel arrays returned by Open-Meteo.
     [JsonPropertyName("time")]
     public List<string> Time { get; set; } = new();
 
@@ -89,6 +98,7 @@ public class DailyForecast
     public double? Precipitation { get; set; }
     public int WeatherCode { get; set; }
 
+    // Turn Open-Meteo's numeric weather code into text that is easier to read.
     public string Condition => WeatherCode switch
     {
         0 => "Clear sky",
@@ -106,6 +116,7 @@ public class DailyForecast
         _ => "Unknown"
     };
 
+    // Use a simple emoji so the forecast can be understood at a glance.
     public string Icon => WeatherCode switch
     {
         0 => "☀️",

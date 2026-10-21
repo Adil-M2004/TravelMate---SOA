@@ -1,6 +1,9 @@
-﻿<Router AppAssembly="typeof(Program).Assembly" NotFoundPage="typeof(Pages.NotFound)">
+﻿@* The router finds a page whose @page route matches the current browser URL. *@
+<Router AppAssembly="typeof(Program).Assembly" NotFoundPage="typeof(Pages.NotFound)">
     <Found Context="routeData">
+        @* MainLayout provides the shared navigation and page structure. *@
         <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
+        @* Move keyboard focus to the new page heading after navigation. *@
         <FocusOnNavigate RouteData="routeData" Selector="h1" />
     </Found>
 </Router>

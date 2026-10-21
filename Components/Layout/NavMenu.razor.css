@@ -1,3 +1,4 @@
+/* The checkbox is styled as the menu button used on small screens. */
 .navbar-toggler {
     appearance: none;
     cursor: pointer;
@@ -11,10 +12,12 @@
     background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") no-repeat center/1.75rem rgba(255, 255, 255, 0.1);
 }
 
+/* Give the menu button feedback when it is selected. */
 .navbar-toggler:checked {
     background-color: rgba(255, 255, 255, 0.5);
 }
 
+/* Keep the branding area tall enough to match the main layout header. */
 .top-row {
     min-height: 3.5rem;
     background-color: rgba(0,0,0,0.4);
@@ -24,6 +27,7 @@
     font-size: 1.1rem;
 }
 
+/* Shared icon sizing keeps all navigation icons aligned. */
 .bi {
     display: inline-block;
     position: relative;
@@ -46,6 +50,7 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi bi-list-nested' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M4.5 11.5A.5.5 0 0 1 5 11h10a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm-2-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm-2-4A.5.5 0 0 1 1 3h10a.5.5 0 0 1 0 1H1a.5.5 0 0 1-.5-.5z'/%3E%3C/svg%3E");
 }
 
+/* Menu items are separated vertically to make them easier to tap. */
 .nav-item {
     font-size: 0.9rem;
     padding-bottom: 0.5rem;
@@ -81,6 +86,7 @@
     color: white;
 }
 
+/* The menu is hidden until the mobile toggle is checked. */
 .nav-scrollable {
     display: none;
 }
@@ -90,6 +96,7 @@
 }
 
 @media (min-width: 641px) {
+    /* Wide layouts do not need a collapsible menu button. */
     .navbar-toggler {
         display: none;
     }

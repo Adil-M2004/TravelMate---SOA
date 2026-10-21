@@ -1,5 +1,7 @@
-﻿<script type="module" src="@Assets["Components/Layout/ReconnectModal.razor.js"]"></script>
+﻿@* JavaScript listens for Blazor connection events and updates this dialog. *@
+<script type="module" src="@Assets["Components/Layout/ReconnectModal.razor.js"]"></script>
 
+@* Only the message that matches the current connection state is shown. *@
 <dialog id="components-reconnect-modal" data-nosnippet>
     <div class="components-reconnect-container">
         <div class="components-rejoining-animation" aria-hidden="true">

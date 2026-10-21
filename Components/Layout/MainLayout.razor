@@ -1,22 +1,27 @@
 ﻿@inherits LayoutComponentBase
 
+@* Every normal page is placed inside this shared layout. *@
 <div class="page">
+    @* The sidebar contains the links used to move between TravelMate pages. *@
     <div class="sidebar">
         <NavMenu />
     </div>
 
     <main>
+        @* This link gives visitors a place to learn more about Blazor. *@
         <div class="top-row px-4">
             <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
         </div>
 
         <article class="content px-4">
+            @* @Body is replaced with the currently selected page component. *@
             @Body
         </article>
     </main>
 </div>
 
 <div id="blazor-error-ui" data-nosnippet>
+    @* Blazor shows this bar if an unhandled client-side error occurs. *@
     An unhandled error has occurred.
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
