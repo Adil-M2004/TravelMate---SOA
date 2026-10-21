@@ -58,3 +58,371 @@ h1:focus {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
     text-align: start;
 }
+
+
+/* =========================================
+   TravelMATE Futuristic Theme
+   ========================================= */
+
+:root {
+    --travel-bg: #080f20;
+    --travel-surface: #101d34;
+    --travel-border: #263750;
+    --travel-cyan: #67e8f9;
+    --travel-text: #f1f7ff;
+    --travel-muted: #a7b9d0;
+}
+
+body {
+    background: var(--travel-bg);
+    color: var(--travel-text);
+}
+
+/* Main application layout */
+
+.page {
+    background: var(--travel-bg);
+}
+
+main {
+    background: var(--travel-bg);
+}
+
+.content {
+    color: var(--travel-text);
+}
+
+.top-row {
+    background: #101a2e !important;
+    border-bottom: 1px solid var(--travel-border) !important;
+}
+
+    .top-row a {
+        color: var(--travel-cyan) !important;
+    }
+
+/* Sidebar */
+
+.sidebar {
+    background: linear-gradient( 180deg, #091529 0%, #122342 100% ) !important;
+    border-right: 1px solid var(--travel-border);
+}
+
+    .sidebar .top-row,
+    .sidebar .navbar {
+        background: transparent !important;
+    }
+
+    .sidebar .nav-link {
+        color: #c5d5e8 !important;
+        border-radius: 12px;
+    }
+
+        .sidebar .nav-link:hover {
+            background: #203855 !important;
+            color: white !important;
+        }
+
+        .sidebar .nav-link.active {
+            background: #173d57 !important;
+            color: var(--travel-cyan) !important;
+        }
+
+/* Homepage */
+
+.travel-home {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px 12px 80px;
+}
+
+.travel-hero {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    gap: 35px;
+    min-height: 480px;
+}
+
+.hero-eyebrow {
+    color: var(--travel-cyan);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.hero-content h1 {
+    font-size: clamp(42px, 5vw, 76px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -2px;
+    margin: 24px 0;
+}
+
+    .hero-content h1 span {
+        display: block;
+        background: linear-gradient( 90deg, #67e8f9, #818cf8 );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+.hero-content p {
+    color: var(--travel-muted);
+    font-size: 17px;
+    line-height: 1.8;
+    max-width: 550px;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 32px;
+}
+
+.travel-btn {
+    padding: 14px 22px;
+    border-radius: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: 0.25s;
+}
+
+    .travel-btn.primary {
+        background: var(--travel-cyan);
+        color: #071425;
+    }
+
+    .travel-btn.secondary {
+        background: #182a44;
+        color: white;
+        border: 1px solid #354a66;
+    }
+
+    .travel-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px #00d9ff25;
+    }
+
+/* Futuristic planet */
+
+.hero-visual {
+    position: relative;
+    height: 390px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.planet {
+    font-size: 185px;
+    filter: drop-shadow(0 0 45px #00d9ff65);
+    animation: planetFloat 6s ease-in-out infinite;
+    z-index: 2;
+}
+
+.orbit {
+    position: absolute;
+    width: 330px;
+    height: 330px;
+    border: 1px solid #67e8f944;
+    border-radius: 50%;
+}
+
+.orbit-two {
+    width: 390px;
+    height: 210px;
+    transform: rotate(-28deg);
+    border-color: #818cf855;
+}
+
+.orbit-label {
+    position: absolute;
+    background: #152a44;
+    color: var(--travel-cyan);
+    border: 1px solid #315875;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    z-index: 3;
+}
+
+.label-one {
+    top: 35px;
+    right: 30px;
+}
+
+.label-two {
+    bottom: 70px;
+    left: 15px;
+}
+
+.label-three {
+    bottom: 30px;
+    right: 10px;
+}
+
+@keyframes planetFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+/* Feature cards */
+
+.travel-features {
+    margin-top: 45px;
+}
+
+.section-heading {
+    margin-bottom: 30px;
+}
+
+    .section-heading h2 {
+        font-size: 32px;
+        font-weight: 750;
+        margin-top: 12px;
+    }
+
+    .section-heading p {
+        color: var(--travel-muted);
+    }
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.feature-card {
+    background: linear-gradient( 145deg, #14243d, #0e192d );
+    border: 1px solid var(--travel-border);
+    border-radius: 20px;
+    padding: 28px;
+    text-decoration: none;
+    color: var(--travel-text);
+    transition: 0.25s;
+}
+
+    .feature-card:hover {
+        transform: translateY(-6px);
+        border-color: var(--travel-cyan);
+        box-shadow: 0 15px 40px #00d9ff12;
+        color: white;
+    }
+
+.feature-icon {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.feature-card h3 {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.feature-card p {
+    color: var(--travel-muted);
+    line-height: 1.7;
+    min-height: 80px;
+}
+
+.feature-card span {
+    color: var(--travel-cyan);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* Existing dashboard, weather and currency pages */
+
+main .card {
+    background: var(--travel-surface);
+    color: var(--travel-text);
+    border: 1px solid var(--travel-border);
+    border-radius: 16px;
+}
+
+    main .card h1,
+    main .card h2,
+    main .card h3,
+    main .card h4,
+    main .card h5 {
+        color: var(--travel-text);
+    }
+
+main .form-control,
+main .form-select {
+    background: #14243b;
+    border: 1px solid #38516e;
+    color: white;
+}
+
+    main .form-control:focus,
+    main .form-select:focus {
+        background: #182b46;
+        color: white;
+        border-color: var(--travel-cyan);
+        box-shadow: 0 0 0 3px #67e8f922;
+    }
+
+    main .form-control::placeholder {
+        color: #9caec5;
+    }
+
+main .list-group-item {
+    background: #14243b;
+    color: white;
+    border-color: #30445f;
+}
+
+    main .list-group-item:hover {
+        background: #203955;
+        color: var(--travel-cyan);
+    }
+
+/* Responsive */
+
+@media (max-width: 900px) {
+    .travel-hero {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-visual {
+        height: 280px;
+    }
+
+    .planet {
+        font-size: 130px;
+    }
+
+    .orbit {
+        width: 250px;
+        height: 250px;
+    }
+
+    .orbit-two {
+        width: 280px;
+        height: 160px;
+    }
+
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .planet {
+        animation: none;
+    }
+
+    .travel-btn,
+    .feature-card {
+        transition: none;
+    }
+}
