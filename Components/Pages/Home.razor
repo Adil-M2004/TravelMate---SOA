@@ -1,27 +1,88 @@
 ﻿@page "/"
 @rendermode InteractiveServer
 
-<PageTitle>TravelMATE - Home</PageTitle>
+<PageTitle>TravelMATE | Explore the World</PageTitle>
 
-<div class="container mt-5 text-center">
-    <h1 class="display-3 fw-bold">TravelMATE</h1>
+<div class="travel-home">
 
-    <p class="lead mt-3">
-        Your smart travel companion!
-    </p>
+    <section class="travel-hero">
+        <div class="hero-content">
+            <span class="hero-eyebrow">
+                ✦ YOUR SMART TRAVEL COMPANION
+            </span>
 
-    <p class="mt-4">
-        Plan your next adventure with real-time weather
-        information, travel forecasts and currency conversion.
-    </p>
+            <h1>
+                Explore Beyond
+                <span>Boundaries.</span>
+            </h1>
 
-    <div class="mt-5">
-        <a href="/weather" class="btn btn-primary btn-lg me-3">
-            Check Weather
-        </a>
+            <p>
+                Discover destinations, check live weather
+                conditions and plan your travel budget.
+                Your next adventure starts here.
+            </p>
 
-        <a href="/currency" class="btn btn-success btn-lg">
-            Currency Converter
-        </a>
-    </div>
+            <div class="hero-actions">
+                <a href="/dashboard" class="travel-btn primary">
+                    Explore Destinations →
+                </a>
+
+                <a href="/currency" class="travel-btn secondary">
+                    Currency Converter
+                </a>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="orbit orbit-one"></div>
+            <div class="orbit orbit-two"></div>
+            <div class="planet">🌍</div>
+            <span class="orbit-label label-one">TOKYO</span>
+            <span class="orbit-label label-two">DUBAI</span>
+            <span class="orbit-label label-three">NEW YORK</span>
+        </div>
+    </section>
+
+    <section class="travel-features">
+        <div class="section-heading">
+            <span class="hero-eyebrow">DISCOVER MORE</span>
+            <h2>Everything you need to explore.</h2>
+            <p>Powerful travel tools, all in one place.</p>
+        </div>
+
+        <div class="feature-grid">
+
+            <a href="/dashboard" class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h3>Travel Dashboard</h3>
+                <p>
+                    Search destinations and view weather
+                    and currency information together.
+                </p>
+                <span>Explore dashboard →</span>
+            </a>
+
+            <a href="/weather" class="feature-card">
+                <div class="feature-icon">☀️</div>
+                <h3>Live Weather</h3>
+                <p>
+                    Check temperature, humidity and wind
+                    conditions for destinations worldwide.
+                </p>
+                <span>Check weather →</span>
+            </a>
+
+            <a href="/currency" class="feature-card">
+                <div class="feature-icon">💱</div>
+                <h3>Currency Converter</h3>
+                <p>
+                    Convert your travel budget using
+                    the latest available exchange rates.
+                </p>
+                <span>Convert currency →</span>
+            </a>
+
+        </div>
+    </section>
+
 </div>
