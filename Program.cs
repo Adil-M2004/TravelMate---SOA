@@ -13,6 +13,7 @@ builder.Services.AddHttpClient<WeatherService>();
 builder.Services.AddHttpClient<CurrencyService>();
 builder.Services.AddHttpClient<GeocodingService>();
 builder.Services.AddSingleton<CountryCurrencyService>();
+builder.Services.AddHttpClient<ForecastService>();
 
 var app = builder.Build();
 

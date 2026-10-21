@@ -6,6 +6,7 @@
 @inject WeatherService WeatherService
 @inject CurrencyService CurrencyService
 @inject CountryCurrencyService CountryCurrencyService
+@inject ForecastService ForecastService
 
 <PageTitle>Dashboard - TravelMATE</PageTitle>
 
@@ -146,6 +147,75 @@
         </div>
 
     </div>
+
+    
+    <section class="forecast-section mt-5">
+
+        <h3>7-Day Weather Forecast</h3>
+
+        <p class="text-secondary">
+            Plan ahead with daily weather predictions
+            for @selectedCity.Name.
+        </p>
+
+        @if (!string.IsNullOrEmpty(forecastError))
+        {
+            <div class="alert alert-warning">
+                @forecastError
+            </div>
+        }
+        else if (forecast.Count > 0)
+        {
+            <div class="forecast-grid">
+
+                @foreach (var day in forecast)
+                {
+                    <div class="forecast-card">
+
+                        <h5>@day.Date.ToString("ddd")</h5>
+
+                        <small>
+                            @day.Date.ToString("dd MMM")
+                        </small>
+
+                        <div class="forecast-icon">
+                            @day.Icon
+                        </div>
+
+                        <p class="forecast-condition">
+                            @day.Condition
+                        </p>
+
+                        <h4>
+                            @day.MaxTemperature.ToString("0")°C
+                        </h4>
+
+                        <p>
+                            Low:
+                            @day.MinTemperature.ToString("0")°C
+                        </p>
+
+                        <p>
+                            Rain chance:
+                            @(day.RainProbability.HasValue
+                                ? $"{day.RainProbability}%"
+                                : "N/A")
+                        </p>
+
+                        <p>
+                            Rainfall:
+                            @(day.Precipitation.HasValue
+                                ? $"{day.Precipitation:0.0} mm"
+                                : "N/A")
+                        </p>
+
+                    </div>
+                }
+
+            </div>
+        }
+    </section>
+
 }
 
 @code {
@@ -160,6 +230,9 @@
     private string? errorMessage;
     private bool isLoading;
 
+    private List<DailyForecast> forecast = new();
+    private string? forecastError;
+
     private async Task SearchDestinations()
     {
         cities.Clear();
@@ -168,6 +241,9 @@
         currency = null;
         destinationCurrency = null;
         errorMessage = null;
+
+        forecast.Clear();
+        forecastError = null;
 
         if (searchText.Trim().Length < 2)
         {
@@ -205,6 +281,19 @@
         currency = null;
         errorMessage = null;
         isLoading = true;
+        forecast.Clear();
+        forecastError = null;
+
+        try
+        {
+            forecast = await ForecastService.GetForecastAsync(
+                city.Latitude,
+                city.Longitude);
+        }
+        catch (Exception)
+        {
+            forecastError = "The seven-day forecast is currently unavailable.";
+        }
 
         try
         {

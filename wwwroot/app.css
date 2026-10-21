@@ -426,3 +426,82 @@ main .list-group-item {
         transition: none;
     }
 }
+
+
+/* =====================================
+   TravelMATE - Seven Day Forecast
+   ===================================== */
+
+.forecast-section h3 {
+    color: #f1f7ff;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.forecast-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(145px, 1fr));
+    gap: 14px;
+    overflow-x: auto;
+    padding: 8px 2px 20px;
+}
+
+.forecast-card {
+    background: linear-gradient( 145deg, #14243d, #0e192d );
+    border: 1px solid #263750;
+    border-radius: 18px;
+    padding: 20px 12px;
+    text-align: center;
+    color: #f1f7ff;
+    transition: 0.25s;
+}
+
+    .forecast-card:hover {
+        transform: translateY(-5px);
+        border-color: #67e8f9;
+        box-shadow: 0 10px 25px #00d9ff18;
+    }
+
+    .forecast-card h5 {
+        font-weight: 700;
+        color: #67e8f9;
+    }
+
+    .forecast-card small {
+        color: #a7b9d0;
+    }
+
+.forecast-icon {
+    font-size: 38px;
+    margin: 18px 0;
+}
+
+.forecast-condition {
+    color: #a7b9d0;
+    font-size: 13px;
+    min-height: 40px;
+}
+
+.forecast-card h4 {
+    color: white;
+    font-weight: 800;
+    font-size: 24px;
+}
+
+.forecast-card p {
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 1200px) {
+    .forecast-grid {
+        grid-template-columns: repeat(7, 145px);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .forecast-card {
+        transition: none;
+    }
+}
+
